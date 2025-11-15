@@ -1,13 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Mandelbrot WebGL</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <title>Mandelbrot Project</title>
+    <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <h2>oo</h3>
-  <canvas id="glCanvas" width="800" height="600"></canvas>
-  <script src="main.js"></script>
+  
+  <video autoplay muted loop id="bg-video">
+    <source src="media/coolVideo.mp4" type="video/mp4" />
+  </video>
+  <script>
+    const vid = document.getElementById("bg-video");
+    vid.playbackRate = 0.7; // slow down to 50%, try 0.2–2.0
+</script>
+
+<nav class="menu">
+    <a href="index.html">Home</a>
+    <a href="render.html">Render</a>
+</nav>
+
+<section class="container">
+    <h1>Fractal Renderer</h1>
+    <p>
+        lorem ispuma sdfasdf
+    </p>
+
+    <h2>Fractals</h2>
+    <ul>
+        <li>math numbers</li>
+
+    </ul>
+
+    <button class="go-btn" onclick="location.href='render.html'">
+        Render!
+    </button>
+</section>
+
 </body>
 </html>
