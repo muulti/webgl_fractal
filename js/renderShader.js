@@ -1,5 +1,7 @@
-// Minimal WebGL shader renderer — fullscreen color shifter
+import { getShaderCode } from './shaders/mandlebrot.js';
+
 (function(){
+  // get the html canvas element
   const canvas = document.querySelector('.canvasContainer .renderCanvas') || (() => {
     const c = document.createElement('canvas');
     c.className = 'renderCanvas';
@@ -10,44 +12,39 @@
   const gl = canvas.getContext('webgl');
   if(!gl) { console.error('WebGL not supported'); return; }
 
+  // inline vert (for now i think)
   const vs = `
-    attribute vec2 a;
-    void main(){ gl_Position = vec4(a,0.,1.); }
-  `;
-
-  const fs = `
-    precision mediump float;
-    uniform vec2 u_res;
-    uniform float u_time;
-    void main(){
-      vec2 uv = gl_FragCoord.xy / u_res;
-      // simple animated color fields -> map from -1..1 to 0..1
-      float r = sin(u_time + uv.x * 6.2831) * 0.5 + 0.5;
-      float g = sin(u_time*1.3 + uv.y * 6.2831) * 0.5 + 0.5;
-      float b = sin(u_time*0.7 + (uv.x+uv.y) * 3.14159) * 0.5 + 0.5;
-      gl_FragColor = vec4(r,g,b,1.0);
+    attribute vec2 a_position;
+    varying vec2 v_pos;
+    void main() {
+        v_pos = a_position;               
+        gl_Position = vec4(a_position, 0.0, 1.0);
     }
   `;
 
-  function compile(t, src){
-    const s = gl.createShader(t);
-    gl.shaderSource(s, src);
-    gl.compileShader(s);
-    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){
-      console.error(gl.getShaderInfoLog(s));
-      gl.deleteShader(s);
+  // Fragment shader
+  const fs = getShaderCode('mandelbrot');
+
+  // Compilation & program creation
+  //----------------------------------------------
+  function compile(type, source){
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if(!gl.getShaderParameter(shader, gl.COMPILE_STATUS)){
+      console.error(gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
       return null;
     }
-    return s;
+    return shader;
   }
-
-  function program(vsSrc, fsSrc){
+  function createProgram(vsSource, fsSource){
     const p = gl.createProgram();
-    const a = compile(gl.VERTEX_SHADER, vsSrc);
-    const b = compile(gl.FRAGMENT_SHADER, fsSrc);
-    if(!a || !b) return null;
-    gl.attachShader(p, a);
-    gl.attachShader(p, b);
+    const vShader = compile(gl.VERTEX_SHADER, vsSource);
+    const fShader = compile(gl.FRAGMENT_SHADER, fsSource);
+    if(!vShader || !fShader) return null;
+    gl.attachShader(p, vShader);
+    gl.attachShader(p, fShader);
     gl.linkProgram(p);
     if(!gl.getProgramParameter(p, gl.LINK_STATUS)){
       console.error(gl.getProgramInfoLog(p));
@@ -56,11 +53,12 @@
     return p;
   }
 
-  const prog = program(vs, fs);
+  const prog = createProgram(vs, fs);
   if(!prog) return;
   gl.useProgram(prog);
+  //----------------------------------------------
 
-  // fullscreen quad
+  // Fullscreen quad
   const buf = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buf);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
@@ -68,47 +66,74 @@
     -1,1,   1,-1,   1,1
   ]), gl.STATIC_DRAW);
 
-  const aLoc = gl.getAttribLocation(prog, 'a');
+  const aLoc = gl.getAttribLocation(prog, 'a_position');
   gl.enableVertexAttribArray(aLoc);
   gl.vertexAttribPointer(aLoc, 2, gl.FLOAT, false, 0, 0);
 
-  const uRes = gl.getUniformLocation(prog, 'u_res');
-  const uTime = gl.getUniformLocation(prog, 'u_time');
+  // Send info to the shader proccess and get inputs
+  const uCenter = gl.getUniformLocation(prog, 'u_center');
+  const uZoom = gl.getUniformLocation(prog, 'u_zoom');
+  const uMaxIter = gl.getUniformLocation(prog, 'u_maxIter');
+  let centerX = 0, centerY = 0;
+  let zoom = 2.5;
 
-  // device-pixel handling
-  function resize(){
-    const dpr = window.devicePixelRatio || 1;
-    const w = Math.max(1, Math.floor(canvas.clientWidth * dpr));
-    const h = Math.max(1, Math.floor(canvas.clientHeight * dpr));
-    if(canvas.width !== w || canvas.height !== h){
-      canvas.width = w; canvas.height = h;
-      gl.viewport(0,0,w,h);
+  gl.uniform2f(uCenter, centerX, centerY);
+  gl.uniform1f(uZoom, zoom);
+  gl.uniform1i(uMaxIter, 500);
+  gl.uniform2f(uCenter, 0.0, 0.0);
+  gl.uniform1f(uZoom, 2.5);
+  gl.uniform1i(uMaxIter, 500);
+
+    const uAspect = gl.getUniformLocation(prog, 'u_aspect');
+
+
+    function resize(){
+        const dpr = window.devicePixelRatio || 1;
+        const w = Math.max(1, Math.floor(canvas.clientWidth * dpr));
+        const h = Math.max(1, Math.floor(canvas.clientHeight * dpr));
+        if(canvas.width !== w || canvas.height !== h){
+            canvas.width = w; 
+            canvas.height = h;
+            gl.viewport(0,0,w,h);
+        }
+        gl.uniform1f(uAspect, w/h);  // aspect ratio
     }
-    gl.uniform2f(uRes, canvas.width, canvas.height);
-  }
-  // ensure a visual size if CSS not set
+
+
+  // Set default CSS size if not defined
   if(!canvas.style.height) canvas.style.height = '480px';
   if(!canvas.style.width) canvas.style.width = '100%';
-
   window.addEventListener('resize', resize);
   resize();
 
-  let t0 = performance.now();
-  let raf = null;
-  function frame(now){
-    const time = (now - t0) * 0.001;
-    gl.uniform1f(uTime, time);
+  let isDragging = false;
+let lastMouse = {x:0, y:0};
+
+canvas.addEventListener('mousedown', e => { isDragging = true; lastMouse = {x:e.clientX, y:e.clientY}; });
+canvas.addEventListener('mouseup', () => { isDragging = false; });
+canvas.addEventListener('mousemove', e => {
+    if(isDragging){
+        const dx = (e.clientX - lastMouse.x) / canvas.width * zoom * 2;
+        const dy = (lastMouse.y - e.clientY) / canvas.height * zoom * 2;
+        centerX -= dx;
+        centerY -= dy;
+        lastMouse = {x:e.clientX, y:e.clientY};
+        draw();
+    }
+});
+
+canvas.addEventListener('wheel', e => {
+    const factor = e.deltaY > 0 ? 1.1 : 0.9;
+    zoom *= factor;
+    draw();
+});
+
+  function draw(){
     gl.drawArrays(gl.TRIANGLES, 0, 6);
-    raf = requestAnimationFrame(frame);
+    gl.uniform2f(uCenter, centerX, centerY);
+    gl.uniform1f(uZoom, zoom);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
-
-  // expose simple controls
-  window.shaderRenderer = {
-    start(){ if(!raf){ t0 = performance.now(); raf = requestAnimationFrame(frame); } },
-    stop(){ if(raf){ cancelAnimationFrame(raf); raf = null; } },
-    resize: resize
-  };
-
-  // auto-start
-  window.shaderRenderer.start();
+  
+  draw();
 })();
