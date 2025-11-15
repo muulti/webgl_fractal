@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+    font-family: "StackSansNotch", sans-serif;
+    background: #ff00cc;
+    color: #2449ee;
+}
+
+.menu {
+    background: #111;
+    padding: 12px;
+}
+
+.menu a {
+    color: white;
+    margin-right: 20px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+@font-face {
+  font-family: "StackSansNotch";
+  src: url("../fonts/StackSansNotch.ttf") format("truetype");
+  font-weight: 100 900;  
+  font-display: swap;
+}
+
+#bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    filter: blur(1.5px);
+    object-fit: cover;
+    z-index: -1;
+}
+.container {
+    background: rgba(140, 63, 235, 0.35);   /* color + transparency */
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 800px;
+    margin: 40px auto;
+    backdrop-filter: blur(90px);     /* frosted glass */
+}
+.menu a.active {
+    text-decoration: underline;
+}
+
+.content {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.go-btn {
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    border: none;
+    background: #333;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#mandelCanvas {
+    background: #000;
+    display: block;
+    margin: 20px 0;
+}
