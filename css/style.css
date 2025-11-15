@@ -2,16 +2,35 @@ html, body {
     margin: 0;
     font-family: "StackSansNotch", sans-serif;
     background: transparent;
-    color: #db0c0c;
-    text-shadow: #e9d309 0px 0px 8px;
+    color: #084197e4;
+    text-shadow: #0331ff86 0px 0px 8px;
 }
 
+.contact-buttons {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
 
+.contact-btn {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background: #222;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.contact-btn:hover {
+  background: #555;
+}
 .doc-like {
   width: 70vw;       
   margin: 40px auto;       
   padding: 40px 50px;
-  background: #faf7f1;
+  background: #e7d8ba;
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.4);
   box-sizing: border-box;
@@ -21,7 +40,7 @@ html, body {
     height: 750px;      
     margin: 40px auto;       
     padding: 40px 50px;
-    background: hsl(40, 91%, 5%);
+    background: hsla(60, 2%, 9%, 0.945);
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     box-sizing: border-box;
