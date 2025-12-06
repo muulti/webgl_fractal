@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Mandelbrot Project</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <title>multifractals</title>
+    <link rel="stylesheet" href="css/style0.css" />
 </head>
 <body>
   <video autoplay muted loop id="bg-video">
@@ -15,44 +15,31 @@
 </script>
 <main class="doc-like">
   <h1>Fractal Renderer</h1>
-  <h2>Made by Diego (Multi)</h2>
-  <h3>Here´s my fractal renderer project using webgl. Originally coded the shaders in unity but here they are in WebGL so anyone with a browser can play with it!.</h3>
-  <h3>Have in mind:</h3>
-  <h3>If the render doesn´t work make sure to turn on <span class="highlight">hardware acceleration</span> in your browser settings. Unfortunately it doesn´t work on mobile devices.</h3>
-  <em>To do list:</em>
-    <p>→ ▢ Toolbox (parameter controls)  </p>
-    <p>→ ▢ Make more fractals </p>
-    <p>→ ▢ RGB Shifting </p>
-    <p>→ ▢ Maybe make a shader that computes customized equations </p>
-    <p></p>
-    <p>Check my github for other cool stuff!</p>
+  <h2><a href="https://github.com/muulti" target="_blank" class="contact-btn">
+  <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub">
+  </a>  Made by Diego (Multi)</h2>
+  <h3>Here´s my fractal renderer project using webgl. Originally coded the shaders in unity but here they are in WebGL so anyone with a browser can play with it!</h3>
+  <button id="rBtn">Try it!</button>
+  <p>Instructions </p>
+  <h3>If the render doesn´t work make sure to turn on <span class="highlight">hardware acceleration</span> in your browser settings. Unfortunately it doesn´t work on mobile devices</h3>
+  <h3><span class="highlight">Scroll</span> to zoom in & zoom out</h3>
+  <h3><span class="highlight">Drag & Drop</span> to move around the image</h3>
+  <h3><span class="highlight">Reset</span> zoom level and position by pressing R</h3>
+
     <div class="contact-buttons">
-    <a href="https://github.com/muulti" target="_blank" class="contact-btn">GitHub</a>
-  </div>
-</main>
-
-<main class="canvasContainer">
-  <canvas class="renderCanvas" aria-label="Color animation"></canvas>
-
-  <button id="fullscreenBtn"> ⛶</button>
-
-  <div class="controls">
-    <p>Controls:</p>
-    <p>Drag & Drop for movement</p>
-    <p>Zoom in/out using mousewheel</p>
-    <p>Press R to center and reset Zoom</p>
+    <script>
+      document.getElementById("rBtn").addEventListener("click", () => {
+        window.location.href = "render.html";
+      });
+</script>
+<p>What is it?</p>
   </div>
 
-  <script src="js/canvasFS.js"></script>
+  <h3>This is a personal experiment that renders fractals by applying recursive functions to complex numbers. Each complex number has a real part and an imaginary part, which correspond to the vertical and horizontal axes, respectively.</h3>
+<h3>By defining a maximum number of iterations, you can check whether a number diverges or converges (after applying the function that many times) relative to a defined diameter, which sets the range for convergence.</h3>
+<h3>Each pixel on the screen corresponds to a complex number, and by measuring its divergence, you can assign it a color accordingly. This process gives rise to diverse, beautiful, and infinitely intricate fractal sets.</h3>
+<h3>Be careful! Fractals are infinitely complex. This means that while you keep zooming, new shapes and configurations keep appearing. However, an issue also appears. Float variables have a finite precision therefore inevitably rendering a pixelated image when zoomed in too much.</h3>
 </main>
 
-<main class="doc-like">
-  <h3>This is a personal little experiment. It renders fractal applying recursive functions to complex numbers. Each complex number is made out of part real and part imaginary which are represented as the vertical and horizontal axis respectively. </h3>
-  <h3>When you define a maximum number of iterations, you can check if such number is divergent or convergent (after applying the function that many times) relative to a diameter which is a range you can define as well. </h3>
-  <h3>Each pixel in the screen has a coordinate (hence a real and imaginary part) and when you measure its divergence you can give it a different color accordingly, giving life to diverse beautiful and infinitely complex sets.</h3>
-
-</main>
-
-<script type = "module" src="js/renderShader.js"></script>
 </body>
 </html>

@@ -1,0 +1,138 @@
+html, body {
+  margin: 0;
+  font-family: "Jersey25-Regular", Helvetica, sans-serif;
+  background: transparent;
+  color: #301350e4;
+  text-size-adjust: 100%;
+}
+
+
+.highlight {
+  font-weight: 900;
+  color: #c218cbe4;
+}
+
+
+h1 {
+  font-family: "Jersey25-Regular", sans-serif;
+  text-align: center;
+  font-size: 5rem;
+  line-height: 1;
+}
+
+h2 {
+  font-family: "Jersey25-Regular", sans-serif;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  line-height: 1.6;
+}
+
+
+p {
+  font-size: 3rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+p em {
+  font-weight: 600;
+  color: #444;
+}
+
+em {
+  font-size: 1.1rem;
+  font-style: oblique;
+  color: #666;
+}
+
+
+.contact-buttons {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+#rBtn {
+  margin-left: 40%;
+  padding: 0.8rem 1.6rem;
+  background: #510be8;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 2em;
+  cursor: pointer;
+  transition: background 0.5s, transform 0.2s ease;
+}
+
+#rBtn:hover {
+  background: #e80bcb;
+  transform: scale(1.08);
+}
+
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  background: #012a8a;
+  color: #fff;
+  border-radius: 50%;
+  text-decoration: none;
+
+  transition: background 0.2s, transform 0.15s ease;
+}
+
+.contact-btn:hover {
+  background: #0d2d75;
+  transform: scale(1.07);
+}
+
+.contact-btn img {
+  width: 22px;
+  height: 22px;
+  filter: invert(1);
+}
+
+.doc-like {
+  position: relative;
+  width: 70vw;
+  margin: 40px auto;
+  padding: 40px 50px;
+  background: #e8fcff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  box-sizing: border-box;
+}
+
+
+@font-face {
+  font-family: "StackSansNotch";
+  src: url("../fonts/StackSansNotch.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Jersey25-Regular";
+  src: url("../fonts/Jersey25-Regular.ttf") format("truetype");
+  font-weight: 150 950;
+  font-display: swap;
+}
+
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  filter: blur(1.5px);
+  z-index: -1;
+}

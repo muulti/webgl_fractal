@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Mandelbrot Render</title>
-    <link rel="stylesheet" href="css/style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/style1.css" />
+<title>multifractals</title>
 </head>
 <body>
-
-<nav class="menu">
-    <a href="index.html">Home</a>
-    <a href="render.html" class="active">Render</a>
-</nav>
-
-<section class="content">
-    <h1>Mandelbrot Viewer</h1>
-
-    <!-- Canvas for future WebGL renderer -->
-    <canvas id="mandelCanvas" width="800" height="600"></canvas>
-
-    <p>Renderer coming soon… 🚀</p>
-</section>
-
-<script src="js/main.js"></script>
+<div class="appContainer">
+  <canvas class="renderCanvas"></canvas>
+  <div id="controlsContainer">
+    <div id="infoBox" class="controlBox">infoBox</div>
+    <div id="sliders" class="controlBox">Sliders</div>
+    <div id="buttons" class="controlBox">buttons</div>
+    <div id="footer">Footer</div>
+  </div>
+</div>
+<script type = "module" src="js/renderShader.js"></script>
 </body>
 </html>
